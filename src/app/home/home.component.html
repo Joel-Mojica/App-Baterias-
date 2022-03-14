@@ -1,0 +1,449 @@
+
+
+<!--START-->
+
+<div>
+  
+
+<!-- spinner loading -->
+  <div
+    class="loader d-none"
+    style="
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: 700;
+      transition: 1s;
+      background: #468efa;
+    "
+  >
+    <div
+      class="lds-spinner"
+      style="top: 0; left: 0; position: fixed; margin: auto"
+    >
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+<!--Fin  spinner loading -->
+ 
+
+
+<!-- barra de carga -->
+<div
+class="loader2 d-none"
+style="
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 700;
+  transition: 1s;
+  background: #468efa;
+"
+>
+<div  class="" style=" padding: 26px; text-align: center; margin: auto; position: sticky;top: 36%;" >
+  <p class="text-white fs-1">CARGANDO REPORTE...</p>
+  <div id="myProgress">
+    <div id="myBar" style="width: {{progreso}}%"></div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-danger" (click)="cerrarBarra()" *ngIf="mostrarBotonCerrarBarraCarga" style="position: absolute; text-align: right; top: 90%; right: 5%;">X</button>
+
+</div>
+<!--Fin  barra carga -->
+
+
+  <!-- pantalla de inicio  -->
+  <div
+    class="card container rounded-5 shadow mt-5"
+    style="border-top-right-radius: 78px 75px; width: 300px"
+    *ngIf="!mostrar_pantalla_siguiente"
+  >
+
+  
+    <img
+      src="assets/imagenes/logoViamarBien.png"
+      class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
+      width="100%"
+      alt=""
+    />
+
+    <h2
+      class="text-white text-center animate__animated animate__bounceInDown bg-primary rounded shadow mt-1"
+      style="margin: -28px"
+    >
+      Ingrese el Código <br />
+      de Distribuidor
+    </h2>
+
+    <div class="p-4">
+      <hr class="bg-primary" />
+      <form class="">
+        <div class="form-floating mb-3">
+          <input
+            type="tel"
+            class="form-control rounded-4 inputDistribui"
+            #inputTeclado
+            (click)="entrada(inputTeclado)"
+            (dblclick)="entrada2(inputTeclado)"
+            [(ngModel)]="codigo_distribuidor"
+            name="codigoDis"
+            autofocus
+            placeholder="name@example.com"
+            maxlength="7"
+            autocomplete="off"
+          />
+          <label for="floatingInput">Código</label>
+          <small class="text-muted" style="font-size: 13px;">Toque dos veces para entrada manual.</small>
+        </div>
+        <button
+          class="w-100 mb-2 btn btn-lg rounded-4 btn-primary sombra_movil"
+          type="submit"
+          (click)="validaDistribuidor()"
+        >
+          ENTRAR 
+        </button>
+        <hr class="my-2 bg-primary" />
+        <p class="text-center text-small">© 2022 GRUPO VIAMAR CXA</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- toma de seriales  -->
+  <div
+    class="container my-5 p-5 card shadow IventarioBaterias"
+    style="background-color: #fdfdfd;"
+    *ngIf="mostrar_pantalla_siguiente"
+  >
+    <main>
+      <div class="py-2 text-center">
+        <img
+          src="assets/imagenes/logoViamarBien.png"
+          class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
+          width="100%"
+          alt=""
+        />
+        <h4>INVENTARIO / INSPENCCION DE BATERÍAS</h4>
+        <p class="lead fs-4" style="text-align: justify">
+          Importante! Completar la entrada de datos uno a uno. Debe tener
+          extremo cuidado al momento de registrar los seriales, con el fin de
+          que ninguno de los registros se repita o se confunda
+        </p>
+      </div>
+
+      <hr class="bg-primary" />
+
+      <div class="row g-5 mt-5">
+        <div class="col-md-5 col-lg-4 order-md-last shadow">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-primary mt-3">DATOS DISTRIBUIDOR</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">Código Distribuidor</h6>
+                <small class="text-muted">{{ codigoDistribu }}</small>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">Nombre Distribuidor</h6>
+                <small class="text-muted">{{ nombreDistribu }}</small>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">Código Empleado</h6>
+                <small class="text-muted">{{ codigoEmpleado }}</small>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <div class>
+                <h6 class="my-0">Última Fecha Inventario</h6>
+                <small class="text-muted">{{fechaUltimoInv}}</small>
+              </div>
+              <!-- <span class="text-muted">25 dias</span> -->
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-md-7 col-lg-8 border border-primary">
+          <h4 class="mb-3 mt-3 text-primary">Ingrese Serial</h4>
+          <form class="needs-validation formularioReporte" novalidate="">
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <input
+                  type="tel"
+                  class="form-control serial"
+                  name="serial"
+                  id="targetSerial"
+                  #inputSerialInventario
+                  (click)="entrada(inputSerialInventario)"
+                  (dblclick)="entrada2(inputSerialInventario)"
+                  placeholder=""
+                  value=""
+                  autocomplete="off"
+                  maxlength="6"
+                  #serialInput
+                  style="caret-color: transparent"
+                />
+                <small>Toque dos veces para entrada manual</small>
+                <div class="invalid-feedback text-danger">
+                  Valid first name is required.
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <button
+                  type="submit"
+                  (click)="registrarSerial(serialInput)"
+                  class="btn btn-primary"
+                >
+                  Capturar
+                </button>
+              </div>
+            </div>
+
+            <table class="table table-hover text-center my-5">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>SERIAL</th>
+                  <th>DETALLES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let tablaRegis of tablaInventarioBaterias; index as i"
+                >
+                  <td scope="row">
+                    <button
+                      class="btn btn-ligth"
+                      data-toggle="modal"
+                      data-target="#modalEditarSerial"
+                      data-id="{{ tablaRegis.id }}"
+                      #numSerial
+                      (click)="editarSerial(numSerial)"
+                    >
+                      <i class="fas fa-edit text-primary"></i>
+                    </button>
+                    {{ i + 1 }}
+                  </td>
+                  <td>{{ tablaRegis.descripcion }}</td>
+                  <td>BATERÍA No.{{ tablaRegis.id + 1 }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <button
+              class="w-100 btn btn-primary btn-lg mb-3"
+              type="button"
+              [disabled]="tablaInventarioBaterias.length < 1"
+              data-toggle="modal"
+              data-target=".bd-example-modal-xl"
+            >
+              Completar Reporte
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="my-3 pt-5 text-muted text-center text-small">
+      <hr class="bg-primary" />
+      <p class="mb-1">© 2021 GRUPO VIAMAR CXA</p>
+      <ul class="list-inline">
+        <li class="list-inline-item"><a href="#">Privacy</a></li>
+        <li class="list-inline-item"><a href="#">Terms</a></li>
+        <li class="list-inline-item"><a href="#">Support</a></li>
+      </ul>
+    </footer>
+  </div>
+
+  <!-- Modal Confirmar editado-->
+  <div
+    class="modal fade"
+    id="modalEditarSerial"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h5 class="modal-title text-white" id="exampleModalLongTitle">
+            MODIFICAR SERIAL <span class="text-dark">{{serialSeleccionado_soloParaMostrar}} </span>MANUALMENTE
+          </h5>
+        </div>
+        <div class="modal-body bg-light divNuevoSerialPregunta">
+          Estás seguro de modificar este serial?
+        </div>
+
+        <div class="modal-body bg-light divNuevoSerialInput d-none">
+          <div class="form-group">
+            <label for="">Digite el # de serial a modificar</label>
+            <input
+              type="tel"
+              class="form-control mt-2"
+              autocomplete="off"
+              name="nuevoSerial"
+              [(ngModel)]="nuevoSerial"
+              maxlength="6"
+              aria-describedby="helpId"
+              placeholder=""
+            />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="confirmaPregunta()"
+            [ngClass]="{ 'd-none': botonConfirma }"
+          >
+            Confirmar
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-dismiss="modal"
+            (click)="confirmaEditar()"
+            [ngClass]="{ 'd-none': !botonConfirma }"
+          >
+            Aceptar
+          </button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- tabla de datos capturados antes de pasar al reporte y insertar en la tabla reporte-->
+  <div
+    class="modal fade bd-example-modal-xl"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myExtraLargeModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-xl p-2">
+      <div class="modal-content">
+        <div class="p-2">
+          <h3
+            class="text-primary text-white py-5 text-center fs-1 bg-primary shadow rounded"
+          >
+          Última revisión baterías
+          </h3>
+          <hr class="bg-primary" />
+          <table class="table table-striped table-hover text-center shadow">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Serial</th>
+                <th scope="col">Estatus</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let tablaRegis of tablaInventarioBaterias; index as i"
+              >
+                <td scope="row">{{ i + 1 }}</td>
+                <td>{{ tablaRegis.descripcion }}</td>
+                <td>
+                  <button
+                    class="btn btn-ligth"
+                    data-id="{{ tablaRegis.id }}"
+                    #numSerialBorrar
+                    (click)="confirmaBorrarSerial(numSerialBorrar)"
+                    data-toggle="modal"
+                    data-target="#modalBorrarSerial"
+                  >
+                    <i class="fas fa-trash-alt text-danger"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <hr class="bg-primary" />
+
+          <div class="text-center">
+            <button
+              class="btn btn-primary btn-lg btn-block shadow m-1 w-100"
+              [disabled]="tablaInventarioBaterias.length < 1"
+              role="button"
+              (click)="guardarReporte()"
+              data-dismiss="modal"
+            >
+            Completar Revisión
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger btn-lg btn-block shadow m-1 w-100"
+              data-dismiss="modal"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Confirmar eliminado-->
+  <div
+    class="modal fade"
+    id="modalBorrarSerial"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-danger">
+          <h5 class="modal-title text-white" id="exampleModalLongTitle">
+            ELIMINAR SERIAL <span class="text-dark">{{serialSeleccionado_soloParaMostrar}} </span> SELECCIONADO 
+          </h5>
+        </div>
+        <div class="modal-body bg-light">
+          Estás seguro de eliminar este serial?
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-dismiss="modal"
+            (click)="borrarSerial()"
+          >
+            Aceptar
+          </button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+

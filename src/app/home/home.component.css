@@ -1,0 +1,155 @@
+/*sombra que sale abajo del boton para ingresar codigo distribuidor*/
+.sombra_movil{
+	-webkit-transform: translateX(0);
+}
+
+.sombra_movil:before{
+	content: '';
+	position: absolute;
+	width: 90%;
+	top: 100%;
+	left: 5%;
+	height: 10px;
+	background: -webkit-radial-gradient(
+		center, ellipse,
+		rgba(0,0,0,0.30) 0%,
+		rgba(0,0,0,0) 80%);
+	-webkit-transition-duration: 0.5s;
+	opacity: 0;
+}
+
+.sombra_movil:hover{
+	-webkit-animation: 1.5s movercaja infinite;	
+}
+
+@-webkit-keyframes movercaja{
+	50%{
+		-webkit-transform: translateY(-10px);
+	}
+}
+.sombra_movil:hover:before{
+	opacity: 0.4;
+	-webkit-transform: translateY(5px);
+    opacity: 1;
+	-webkit-animation: 1.5s moversombra infinite;	
+}
+
+@-webkit-keyframes moversombra{
+	50%{
+		opacity: 1;
+		-webkit-transform: translateY(3px);
+	}
+}
+/*fin boton sombra  */
+
+
+/*loading personalizado*/
+
+.lds-spinner {
+	color: official;
+	display: inline-block;
+	position: fixed;
+	left : 50%;
+	bottom : 0;
+	right : 0;
+	top : 50%;
+	width: 60px;
+  height: 60px;
+  }
+  .lds-spinner div {
+	transform-origin: 40px 40px;
+	animation: lds-spinner 1.2s linear infinite;
+  }
+  .lds-spinner div:after {
+	content: " ";
+	display: block;
+	position: absolute;
+	top: 3px;
+	left: 37px;
+	width: 6px;
+	height: 18px;
+	border-radius: 20%;
+	background: #fff;
+  }
+  .lds-spinner div:nth-child(1) {
+	transform: rotate(0deg);
+	animation-delay: -1.1s;
+  }
+  .lds-spinner div:nth-child(2) {
+	transform: rotate(30deg);
+	animation-delay: -1s;
+  }
+  .lds-spinner div:nth-child(3) {
+	transform: rotate(60deg);
+	animation-delay: -0.9s;
+  }
+  .lds-spinner div:nth-child(4) {
+	transform: rotate(90deg);
+	animation-delay: -0.8s;
+  }
+  .lds-spinner div:nth-child(5) {
+	transform: rotate(120deg);
+	animation-delay: -0.7s;
+  }
+  .lds-spinner div:nth-child(6) {
+	transform: rotate(150deg);
+	animation-delay: -0.6s;
+  }
+  .lds-spinner div:nth-child(7) {
+	transform: rotate(180deg);
+	animation-delay: -0.5s;
+  }
+  .lds-spinner div:nth-child(8) {
+	transform: rotate(210deg);
+	animation-delay: -0.4s;
+  }
+  .lds-spinner div:nth-child(9) {
+	transform: rotate(240deg);
+	animation-delay: -0.3s;
+  }
+  .lds-spinner div:nth-child(10) {
+	transform: rotate(270deg);
+	animation-delay: -0.2s;
+  }
+  .lds-spinner div:nth-child(11) {
+	transform: rotate(300deg);
+	animation-delay: -0.1s;
+  }
+  .lds-spinner div:nth-child(12) {
+	transform: rotate(330deg);
+	animation-delay: 0s;
+  }
+  @keyframes lds-spinner {
+	0% {
+	  opacity: 1;
+	}
+	100% {
+	  opacity: 0;
+	}
+  }
+
+
+
+  /*****Centrando div*****/
+
+/* barra de progreso insercion  */
+  #myProgress {
+	position: relative;
+	width: 100%;
+	height: 30px;
+	background-color: #ddd;
+	border-radius: 16px;
+  }
+  
+  #myBar {
+	position: absolute;
+	width: 1%;
+	height: 100%;
+	background-color: #0ae71df1;
+	border-radius: 16px;
+	transition: 0.5s;
+  }
+  /* fin de progreso insercion  */
+
+
+

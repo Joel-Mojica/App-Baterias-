@@ -1,0 +1,788 @@
+<div>
+
+
+<!-- carga inicio loading -->
+<div
+    class="loaderInicio"
+    style="
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      transition: 1s;
+      background: #468efa;
+    "
+  >
+  <div  style="padding: 26px; text-align: center; margin: auto; position: sticky; top: 36%;" >
+    
+    <i class="fa fa-check-circle text-white" aria-hidden="true" style="font-size: 100px; "></i>
+    <br>
+    <p class="text-white fs-1">YA ESTÁ TODO LISTO!</p>
+  </div>
+    
+</div>
+<!-- fin carga inicio-->
+
+
+
+<!-- carga de procesos -->
+<div
+class="loader d-none"
+style="
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  transition: 1s;
+  background: #468efa;
+"
+>
+<div
+  class="lds-spinner"
+  style="position: sticky;top: 40%;left: 42%;"
+>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+</div>
+<!-- fin carga de procesos -->
+
+
+
+<div><!-- verificar si este div esta de mas  -->
+
+    <div class="col text-center bg-white shadow container mt-5 p-0" id="target">
+      
+      <h2 class="text-primary text-white bg-primary shadow p-3" >REPORTE DE DISCREPANCIAS INVENTARIO DISTRIBUIDOR</h2>
+
+          <p class="m-1" style="text-align: right; "> <span class="fech">Fecha: </span> <span class="" style="font-weight: bold;">{{fecha}}</span></p>
+
+      <div class="row mt-2 m-0" style="line-height: 0.3;">
+          <div class="col-sm" style="text-align: left; ">
+            <p> <span class="fech">CÓDIGO DISTRIBUIDOR: </span> <span class="" style="font-weight: bold;">{{codigoDistribuidor}}</span></p>
+            <p> <span class="fech">NOMBRE: </span> <span class="" style="font-weight: bold; line-height: 1;">{{nombreDistribuidor}}</span></p>
+            <p> <span class="fech">BATERÍAS EN STOCK: </span> <span class="" style="font-weight: bold;">{{baterias_en_stock}}</span></p>
+          </div>
+
+              <hr class="separadorDinamicoPC_CEl">
+
+          <div class="col-sm" style="text-align: left; ">
+              <p> <span class="fech">CÓDIGO EMPLEADO: </span> <span class="" style="font-weight: bold;">{{codigo_de_empleado}}</span></p>
+              <p> <span class="fech">NOMBRE: </span> <span class="" style="font-weight: bold;">{{nombre_de_empleado}}</span></p>
+              <p><span class="fech">NÚMERO INVENTARIO: </span> <span class="" style="font-weight: bold;">{{id_inv_actual}}</span> </p>
+          </div>
+      </div>
+
+    </div>
+
+<hr class="bg-primary" />
+
+
+<!-- mostrar si el inventario no tiene ningun problema -->
+<div class="container shadow p-5" style="padding: 10px; background-color: white; font-size: 13px;" *ngIf="estado_todo_bien">
+  <div class="text-center">
+      <i class="fa fa-check-circle text-success mb-3" aria-hidden="true" style="font-size: 180px;"></i>
+      <h1 class="text-success" style="text-align: justify;">Este almacén está al día y no presenta inconvenientes!</h1>
+  </div>
+</div>
+
+
+<!-- mostrar si el inventario no tiene conexion o se ingreso directamente al link -->
+<div class="container shadow p-5" style="padding: 10px; background-color: white; font-size: 13px;" *ngIf="error_carga_pantallaVacia">
+  <div class="text-center">
+      <i class="fa fa-times-circle text-danger mb-3" aria-hidden="true" style="font-size: 180px;"></i>
+      <h1 class="text-danger" style="text-align: justify;">Ha ocurrido un error de carga, reinicie la página o inicie el proceso nuevamente!</h1>
+  </div>
+</div>
+
+
+<!-- contenido de tablas y secciones reporte -->
+<div class="container shadow my-4" style="padding: 10px; background-color: white; font-size: 13px;">
+
+  <div class="table-responsive rounded shadow" *ngIf="noEncontrados">
+    <h3 class="p-3 bg-secondary text-white text-center m-0">
+      A. Seriales no existentes / Introducidas por error
+    </h3>
+
+    <table class="table text-center table-bordered table-striped m-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>SERIAL</th>
+        </tr>
+      </thead>
+      <tbody class="text-dark">
+        <tr
+          *ngFor="
+            let serial_no_encontrado of seriales_No_Encontrados[0];
+            index as i
+          "
+        >
+          <td scope="row">{{ i + 1 }}</td>
+          <td>{{ serial_no_encontrado.SERIAL }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="b-example-divider" *ngIf="reporte_a"></div>
+
+  <div class="table-responsive shadow" *ngIf="reporte_a">
+    <h3 class="p-3 bg-dark text-white text-center m-0">
+      A2. Seriales no Corresponden al Distribuidor
+    </h3>
+
+    <table class="table text-center table-bordered table-striped m-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>SERIAL</th>
+          <th>DESCRIPCIÓN BATERÍA</th>
+        </tr>
+      </thead>
+      <tbody class="text-dark">
+        <tr *ngFor="let reporte_a of reporteFinalBaterias_a[0]; index as i">
+          <td scope="row">{{ i + 1 }}</td>
+          <td>{{ reporte_a.SERIAL }}</td>
+          <td>{{ reporte_a.DESCRIPCION }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="b-example-divider" [ngStyle]="{'display': reporteFinalBaterias_b.length > 0 ? 'block' : 'none' }"></div>
+
+  <div class="table-responsive shadow" [ngStyle]="{'display': reporteFinalBaterias_b.length > 0 ? 'block' : 'none' }">
+    <h3 class="p-3 bg-primary text-white text-center m-0">
+      B. Seriales con Alerta Rotación
+    </h3>
+    <table class="table text-center table-bordered table-striped m-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>SERIAL</th>
+          <th>DESCRIPCIÓN BATERÍA</th>
+          <th>FECHA</th>
+          <TH>ACCIÓN</TH>
+        </tr>
+      </thead>
+      <tbody class="cuerpoReporte_B" #cuerpoReporte_seccion_b>
+        <tr *ngFor="let reporte_b of reporteFinalBaterias_b; index as i">
+          <td scope="row">
+            <input
+              class="form-check-input checkBoxSerial"
+              #rotacionSeleccionados
+              (click)="selectCheck(rotacionSeleccionados)"
+              type="checkbox"
+              data-name="{{ reporte_b.SERIE }}"
+              id="{{ i }}"
+            />
+            {{ i + 1 }}
+          </td>
+          <td>{{ reporte_b.SERIE }}</td>
+          <td>{{ reporte_b.DESCRIPCION }}</td>
+          <td>{{ reporte_b.FECHA}}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-primary text-white col-sm m-1"
+              data-toggle="modal"
+              data-target="#modalRotacionBateria"
+              attr.data-serie="{{ reporte_b.SERIE }}"
+              data-id="{{ i }}"
+              #datosRotacion
+              (click)="datoFilaRotacion(datosRotacion)"
+              [disabled]="rotarMultiplesSeriales.length > 0"
+            >
+              Solicitar Rotación
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-danger text-white col-sm m-1"
+              data-toggle="modal"
+              data-target="#modalDarDeBajaRotacionBateria"
+              attr.data-serie="{{ reporte_b.SERIE }}"
+              data-id="{{ i }}"
+              #datosCancelarRotacion
+              (click)="datoFilaRotacion(datosCancelarRotacion)"
+              [disabled]="rotarMultiplesSeriales.length > 0"
+            >
+              Rechazar Rotación
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button
+      type="button"
+      name=""
+      id=""
+      class="btn btn-primary text-white p-2 w-100"
+      [hidden]="rotarMultiplesSeriales.length < 1"
+      data-toggle="modal"
+      data-target="#modalRotacionBateriaMultiples"
+    >
+      Validar Baterias Seleccionadas
+    </button>
+  </div>
+
+  <div class="b-example-divider" *ngIf="deBaja"></div>
+
+  <div class="table-responsive shadow" *ngIf="deBaja">
+    <h3 class="p-3 bg-secondary text-white text-center m-0">
+      B2. Baterías fuera de servicio (rotas o dañadas)
+    </h3>
+    <table class="table text-center table-bordered table-striped m-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>SERIAL</th>
+          <th>NO FACTURA</th>
+          <th>RAZÓN</th>
+        </tr>
+      </thead>
+      <tbody class="">
+        <tr *ngFor="let seriales_dBaja of seriales_dados_deBaja[0]; index as i">
+          <td scope="row">{{ i + 1 }}</td>
+          <td>{{ seriales_dBaja.SERIE }}</td>
+          <td>{{ seriales_dBaja.NO_DOCU }}</td>
+          <td>{{ seriales_dBaja.COMENTARIO }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="b-example-divider" *ngIf="reporte_c"></div>
+
+  <div class="table-responsive shadow" *ngIf="reporte_c">
+    <h3 class="p-3 bg-dark text-white text-center m-0">
+      C. Seriales Facturados a Cliente Final
+    </h3>
+    <table class="table text-center table-bordered table-striped m-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>SERIAL</th>
+          <th>DESCRIPCIÓN BATERÍA</th>
+          <th>VENTA REGISTRADA POR</th>
+          <th>FECHA VENTA</th>
+          <th>ACCIÓN</th>
+        </tr>
+      </thead>
+      <tbody class="text-dark">
+        <tr *ngFor="let reporte_c of reporteFinalBaterias_c[0]; index as i">
+          <td scope="row">{{ i + 1 }}</td>
+          <td>{{ reporte_c.NO_SERIAL }}</td>
+          <td>{{ reporte_c.DESCRIPCION }}</td>
+          <td>{{ reporte_c.NOMBRE }}</td>
+          <td>{{ reporte_c.FECHA_FACTURA }}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-dark"
+              data-toggle="modal"
+              data-target="#modalBatFisica"
+              attr.data-serie="{{ reporte_c.NO_SERIAL }}"
+              data-id="{{ i }}"
+              #datosRehabilitar
+              (click)="datoFilaRehabilitarSerial(datosRehabilitar)"
+            >
+              Rehabilitar Serial
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="b-example-divider" *ngIf="reporte_d"></div>
+
+  <div class="table-responsive shadow" *ngIf="reporte_d">
+    <h3 class="p-3 bg-danger text-white text-center m-0">
+      D. Seriales Sin Registro de Ventas
+    </h3>
+    <table class="table text-center table-bordered table-striped m-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>SERIAL</th>
+          <th>DESCRIPCIÓN BATERÍA</th>
+          <th>NO.FACTURA VIAMAR</th>
+          <th>FECHA FACTURA</th>
+          <TH>ACCIÓN</TH>
+        </tr>
+      </thead>
+      <tbody class="text-dark">
+        <tr *ngFor="let reporte_d of reporteFinalBaterias_d[0]; index as i">
+          <td scope="row">{{ i + 1 }}</td>
+          <td>{{ reporte_d.SERIAL }}</td>
+          <td>{{ reporte_d.DESCRIPCION }}</td>
+          <td>{{ reporte_d.NO_DOCU }}</td>
+          <td>{{ reporte_d.FECHA }}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-danger text-white"
+              data-toggle="modal"
+              data-target="#modalBat_No_Fisica_No_Facturada"
+              attr.data-serie="{{ reporte_d.SERIAL }}"
+              attr.data-articulo="{{ reporte_d.ARTICULO }}"
+              data-id="{{ i }}"
+              #datosRegistrarVenta
+              (click)="datoFilaregistroVenta(datosRegistrarVenta)"
+            >
+              Registrar Venta
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="b-example-divider" *ngIf="sinFactura"></div>
+
+  <div class="table-responsive shadow" *ngIf="sinFactura">
+    <h3 class="p-3 bg-secondary text-white text-center m-0">
+      D2. Seriales sin registro de ventas en Grupo Viamar
+    </h3>
+    <table class="table text-center table-bordered table-striped m-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>SERIAL</th>
+          <th>DESCRIPCIÓN</th>
+        </tr>
+      </thead>
+      <tbody class="text-dark">
+        <tr
+          *ngFor="let serial_sin_factura of seriales_sinFacturas[0]; index as i"
+        >
+          <td scope="row">{{ i + 1 }}</td>
+          <td>{{ serial_sin_factura.SERIAL }}</td>
+          <td>
+            Encontrada al distribuidor # {{ serial_sin_factura.NUM_CLI_DISTRIBUIDOR }} 
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <br><br><br>
+
+  <button type="button" name="" id="" class="btn btn-success btn-lg btn-block" (click)="ngOnInit()" [disabled]="id_inv_actual.length == 0">Refrescar Reporte</button>
+  
+  <button
+    type="button"
+    class="btn btn-primary btn-lg btn-block w-100 my-2"
+    data-toggle="modal"
+    data-target="#modalFinalizarInventario"
+  >
+    Finalizar Reporte
+  </button>
+
+
+</div>
+
+<!-- Modal Rotacion Baterias Unica-->
+<div
+  class="modal fade"
+  id="modalRotacionBateria"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-white" id="exampleModalLongTitle">
+          Confirmación Serial
+        </h5>
+      </div>
+
+      <div class="modal-body bg-light">
+        <div class="form-group">
+          <label for="">Escanear Serial</label>
+          <input
+            type="tel"
+            class="form-control mt-2"
+            #inputTeclado2
+            (click)="entrada(inputTeclado2)"
+            [(ngModel)]="inputSerialRotar"
+            autocomplete="off"
+            name=""
+            value=""
+            maxlength="6"
+            aria-describedby="helpId"
+            placeholder=""
+          />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          *ngIf="inputSerialRotar.length == 6"
+          (click)="solicitarRotacion()"
+        >
+          Confirmar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+          (click)="cancelar()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Fin Modal Rotacion BAterias-->
+
+<!-- Modal Rotacion Multiples-->
+<div
+  class="modal fade"
+  id="modalRotacionBateriaMultiples"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-white" id="exampleModalLongTitle">
+          Confirmación Seriales
+        </h5>
+      </div>
+
+      <div class="modal-body bg-light">
+        <div class="form-group">
+          <label for="">Escanear Serial</label>
+          <input
+            type="tel"
+            class="form-control mt-2"
+            [disabled]="
+              lista_temporar_comparar_seriales_tomados.length ==
+              rotarMultiplesSeriales.length
+            "
+            #inputTeclado3
+            (click)="entrada(inputTeclado3)"
+            autocomplete="off"
+            name=""
+            value=""
+            maxlength="6"
+            aria-describedby="helpId"
+            placeholder=""
+          />{{ lista_temporar_comparar_seriales_tomados.length }}/{{
+            rotarMultiplesSeriales.length
+          }}
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          (click)="rotarMultiples(cuerpoReporte_seccion_b)"
+          *ngIf="
+            lista_temporar_comparar_seriales_tomados.length ==
+            rotarMultiplesSeriales.length
+          "
+        >
+          Confirmar Seriales
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="validarSerialesRotar(inputTeclado3)"
+          *ngIf="
+            lista_temporar_comparar_seriales_tomados.length !=
+            rotarMultiplesSeriales.length
+          "
+        >
+          Validar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+          (click)="cancelar()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Fin Modal Rotacion BAterias multiples-->
+
+<!-- Modal dar de baja Rotacion Baterias Unica-->
+<div
+  class="modal fade"
+  id="modalDarDeBajaRotacionBateria"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white" id="exampleModalLongTitle">
+          Confirmación Serial (dar de baja)
+        </h5>
+      </div>
+
+      <div class="modal-body bg-light">
+        <div class="form-group">
+          <label for="">Escanear Serial</label>
+          <input
+            type="tel"
+            class="form-control mt-2"
+            #inputTeclado3
+            (click)="entrada(inputTeclado3)"
+            [(ngModel)]="inputSerialRotar"
+            autocomplete="off"
+            name=""
+            value=""
+            maxlength="6"
+            aria-describedby="helpId"
+            placeholder=""
+          />
+        </div>
+      </div>
+
+      <div class="modal-body bg-light">
+        <div class="form-group">
+          <label for="">Comentario (dar de baja) </label>
+          <input
+            type="tel"
+            class="form-control mt-2"
+            [(ngModel)]="comentarioDarDeBaja"
+            autocomplete="off"
+            name=""
+            value=""
+            maxlength="59"
+            aria-describedby="helpId"
+            placeholder=""
+          />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          *ngIf="inputSerialRotar.length == 6"
+          (click)="darDeBajaBateria()"
+          [disabled]="comentarioDarDeBaja.length < 1"
+        >
+          Confirmar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+          (click)="cancelar()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Fin Modal dar de baja Rotacion BAterias-->
+
+<!-- Modal Baterias facturadas pero estan fisicas-->
+<div
+  class="modal fade"
+  id="modalBatFisica"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-white" id="exampleModalLongTitle">
+          Confirmación Serial a Rehabilitar
+        </h5>
+      </div>
+
+      <div class="modal-body bg-light">
+        <div class="form-group">
+          <label for="">Escanear Serial</label>
+          <input
+            type="tel"
+            class="form-control mt-2"
+            #inputTeclado
+            (click)="entrada(inputTeclado)"
+            [(ngModel)]="inputSerialRehabilitar"
+            autocomplete="off"
+            name=""
+            maxlength="6"
+            aria-describedby="helpId"
+            placeholder=""
+          />
+        </div>
+      </div>
+
+      <div class="modal-body bg-light">
+        <div class="form-group">
+          <label for="">Razón de la Acción</label>
+          <input
+            type="text"
+            class="form-control mt-2"
+            [(ngModel)]="inputObservacionRehabilitar"
+            autocomplete="off"
+            name=""
+            maxlength="59"
+            aria-describedby="helpId"
+            placeholder=""
+          />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          (click)="rehabilitarSerial()"
+          [disabled]="this.inputObservacionRehabilitar.length < 1"
+        >
+          Confirmar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+          (click)="cancelar()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Fin Modal Baterias facturadas pero estan fisicas-->
+
+<!-- Modal Baterias  no fisicas y no facturadas-->
+<div
+  class="modal fade"
+  id="modalBat_No_Fisica_No_Facturada"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-white" id="exampleModalLongTitle">
+          Confirmación Serial
+        </h5>
+      </div>
+
+      <div class="modal-body bg-light">
+        <div class="form-group">
+          <label for=""
+            >Se generará el certificado digital para el serial
+            <span class="text-primary">{{ filaRegistroVenta[0] }}</span> a
+            nombre de <span class="text-primary">{{ nombreDistribuidor }}</span> con la
+            fecha de hoy</label
+          >
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          (click)="registroVenta()"
+        >
+          Confirmar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+          (click)="cancelar()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Fin Modal Baterias  no fisicas y no facturadas-->
+
+<!-- Modal Finalizar inventario y reporte de inventario-->
+<div
+  class="modal fade"
+  id="modalFinalizarInventario"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-white" id="exampleModalLongTitle">
+          FINALIZAR INVENTARIO
+        </h5>
+      </div>
+      <div class="modal-body bg-light">
+        Está seguro que quiere finalizar el inventario?
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          (click)="finalizarInv()"
+        >
+          Aceptar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+          (click)="cancelar()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+

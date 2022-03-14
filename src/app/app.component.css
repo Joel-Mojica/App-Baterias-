@@ -1,0 +1,62 @@
+/*
+
+senddata()
+{
+ // for (let i = 0; i < this.tablaInventarioBaterias.length; i++) { 
+
+  //  setTimeout(() => {
+    console.log(this.ind);
+    console.log("d0");
+    console.log(this.tablaInventarioBaterias.length);
+    this.postCertificado.guardarReporteGeneral(this.codigo_distribuidor,this.tablaInventarioBaterias[this.ind].descripcion,this.maxIdInv,this.empleado).subscribe(data =>{
+    this.ind++;
+    console.log("d1");
+    console.log(this.ind);
+    console.log(this.tablaInventarioBaterias.length);
+      if(this.ind< this.tablaInventarioBaterias.length)
+      {
+        setTimeout(() => {
+          console.log(this.ind);
+          console.log('data '+data);
+      this.senddata();
+       },500);
+      }
+      else{
+        setTimeout(() => {
+        this.navegar.navigateByUrl('/reporte');
+      },500);
+      }
+
+    })
+ 
+  
+  //}
+}
+
+ async guardarReporte(){   
+    //document.querySelector('.loader')?.classList.remove('d-none');
+    await this.maxIdReporteInve();
+    
+    //envio variables globales al servicio para usar en el componente de reporte
+    this.postCertificado.tablaReporteFinal = this.tablaInventarioBaterias;
+    this.postCertificado.numInvActual = this.maxIdInv;
+    this.postCertificado.codigoEmpleado = this.empleado;
+
+    //hago los insert al hist_inv_invetario para hacer el reporte
+    this.ind=0;
+    this.senddata();
+
+    //this.tablaInventarioBaterias = [];
+    //this. codigo_distribuidor = '';
+
+
+
+    
+
+    //setTimeout(() => {
+      // document.querySelector('.loader')?.classList.add('d-none');
+    //},3000);
+   
+}
+
+*/
